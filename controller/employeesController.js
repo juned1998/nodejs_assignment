@@ -1,4 +1,5 @@
-const pool = require("./../db.js");
+const Employee = require("./../models/employeeModel");
+const Department = require("./../models/departmentModel");
 
 const catchAsync = (fn) => {
     return (req, res, next) => {
@@ -8,27 +9,57 @@ const catchAsync = (fn) => {
 };
 
 exports.getEmployees = catchAsync(async (req, res) => {
-    const data = await pool.query(
-        `SELECT employees.*, departments.name as Department FROM employees INNER JOIN departments ON departments.id = employees.deptId`
-    );
+    const employees = await Employee.findAll({
+        where: {},
+        include: [
+            {
+                model: Department,
+                as: "department",
+                attributes: ["name"],
+            },
+        ],
+    });
+
     res.json({
         status: 200,
-        data: data.rows,
+        data: employees,
     });
 });
 
 exports.getEmployee = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const data = await pool.query(
-        `SELECT employees.*, departments.name as Department 
-        FROM employees 
-        INNER JOIN departments 
-        on employees.deptId = departments.id 
-        WHERE employees.id = ${id}`
-    );
+    const employee = await Employee.findOne({
+        where: { id: id },
+        include: [
+            {
+                model: Department,
+                as: "department",
+                attributes: ["name"],
+            },
+        ],
+    });
 
     res.json({
         status: 200,
-        data: data.rows,
+        data: employee,
+    });
+});
+
+exports.createEmployee = catchAsync(async (req, res) => {
+    const department = await Department.findOne({
+        where: { name: req.body.department },
+    });
+
+    const employee = await Employee.create({
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        departmentId: department.dataValues.id,
+    });
+
+    res.json({
+        status: 200,
+        message: "Employee created successfully",
+        data: employee,
     });
 });
