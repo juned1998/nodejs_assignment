@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("./../db");
 
 const Department = sequelize.define(
-    "department",
+    "departments",
     {
         name: {
             type: Sequelize.STRING,

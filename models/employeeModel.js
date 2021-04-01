@@ -3,7 +3,7 @@ const sequelize = require("./../db");
 const Department = require("./departmentModel");
 
 const Employee = sequelize.define(
-    "employee",
+    "employees",
     {
         name: {
             type: Sequelize.STRING,
