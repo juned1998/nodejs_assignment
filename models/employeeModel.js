@@ -13,6 +13,10 @@ const Employee = sequelize.define(
             type: Sequelize.STRING,
             field: "phone",
         },
+        joinedOn: {
+            type: Sequelize.DATE,
+            field: "joinedOn",
+        },
         email: {
             type: Sequelize.STRING,
             field: "email",
@@ -32,6 +36,15 @@ const Employee = sequelize.define(
         ],
     }
 );
+
+Employee.addHook("afterCreate", async (employee, options) => {
+    await Department.increment("employeesCount", {
+        by: 1,
+        where: {
+            id: employee.departmentId,
+        },
+    });
+});
 
 Employee.belongsTo(Department);
 

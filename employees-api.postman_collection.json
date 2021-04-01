@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "ae964aae-25ce-4bee-abca-3f34682040dd",
+		"name": "employees-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create employee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Test user2\",\r\n    \"email\" : \"email3@testmail.com\",\r\n    \"phone\": \"23456941\",\r\n    \"department\": \"MARKETING\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://immense-cliffs-88569.herokuapp.com/api/employees",
+					"protocol": "https",
+					"host": [
+						"immense-cliffs-88569",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all employees",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://immense-cliffs-88569.herokuapp.com/api/employees",
+					"protocol": "https",
+					"host": [
+						"immense-cliffs-88569",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all departments",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://immense-cliffs-88569.herokuapp.com/api/departments",
+					"protocol": "https",
+					"host": [
+						"immense-cliffs-88569",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"departments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create department",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"HR\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://immense-cliffs-88569.herokuapp.com/api/departments",
+					"protocol": "https",
+					"host": [
+						"immense-cliffs-88569",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"departments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get employee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://immense-cliffs-88569.herokuapp.com/api/employees/2",
+					"protocol": "https",
+					"host": [
+						"immense-cliffs-88569",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"employees",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get department",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://immense-cliffs-88569.herokuapp.com/api/departments/1",
+					"protocol": "https",
+					"host": [
+						"immense-cliffs-88569",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"departments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,5 +1,6 @@
 const Employee = require("./../models/employeeModel");
 const Department = require("./../models/departmentModel");
+const { Op } = require("sequelize");
 
 const catchAsync = (fn) => {
     return (req, res, next) => {
@@ -9,8 +10,34 @@ const catchAsync = (fn) => {
 };
 
 exports.getEmployees = catchAsync(async (req, res) => {
-    const employees = await Employee.findAll({
-        where: {},
+    let whereObj = {};
+
+    if (req.query.department) {
+        const department = await Department.findOne({
+            where: { name: req.query.department },
+        });
+
+        whereObj.departmentId = department.dataValues.id;
+    }
+
+    if (
+        req.query.joinedOn &&
+        req.query.joinedOn.gte &&
+        req.query.joinedOn.lte
+    ) {
+        const gteDate = new Date(req.query.joinedOn.gte);
+        const lteDate = new Date(req.query.joinedOn.lte);
+        whereObj.joinedOn = { [Op.between]: [gteDate, lteDate] };
+    } else if (req.query.joinedOn && req.query.joinedOn.gte) {
+        const date = new Date(req.query.joinedOn.gte);
+        whereObj.joinedOn = { [Op.gte]: date };
+    } else if (req.query.joinedOn && req.query.joinedOn.lte) {
+        const date = new Date(req.query.joinedOn.lte);
+        whereObj.joinedOn = { [Op.lte]: date };
+    }
+
+    let employeesQuery = await Employee.findAll({
+        where: whereObj,
         include: [
             {
                 model: Department,
@@ -22,7 +49,7 @@ exports.getEmployees = catchAsync(async (req, res) => {
 
     res.json({
         status: 200,
-        data: employees,
+        data: employeesQuery,
     });
 });
 
@@ -50,11 +77,15 @@ exports.createEmployee = catchAsync(async (req, res) => {
         where: { name: req.body.department },
     });
 
+    // YYYY-MM-DD
+    const joiningDate = new Date(req.body.joinedOn);
+
     const employee = await Employee.create({
         name: req.body.name,
         phone: req.body.phone,
         email: req.body.email,
         departmentId: department.dataValues.id,
+        joinedOn: joiningDate,
     });
 
     res.json({

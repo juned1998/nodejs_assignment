@@ -6,7 +6,7 @@ const employeesController = require("./../controller/employeesController");
 router.route("/:id").get(employeesController.getEmployee);
 router
     .route("/")
-    .get(employeesController.getEmployees)
-    .post(employeesController.createEmployee);
+    .post(employeesController.createEmployee)
+    .get(employeesController.getEmployees);
 
 module.exports = router;
