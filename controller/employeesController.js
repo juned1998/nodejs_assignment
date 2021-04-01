@@ -10,8 +10,10 @@ const catchAsync = (fn) => {
 };
 
 exports.getEmployees = catchAsync(async (req, res) => {
+    // create a empty where object
     let whereObj = {};
 
+    // if query params contains department, add department in whereObj
     if (req.query.department) {
         const department = await Department.findOne({
             where: { name: req.query.department },
@@ -20,23 +22,30 @@ exports.getEmployees = catchAsync(async (req, res) => {
         whereObj.departmentId = department.dataValues.id;
     }
 
+    // if query params contains joinedON range
     if (
         req.query.joinedOn &&
         req.query.joinedOn.gte &&
         req.query.joinedOn.lte
     ) {
+        // add joinedOn range from query params
         const gteDate = new Date(req.query.joinedOn.gte);
         const lteDate = new Date(req.query.joinedOn.lte);
         whereObj.joinedOn = { [Op.between]: [gteDate, lteDate] };
+
+        // else add joinedOn greater than or equal to date from query params
     } else if (req.query.joinedOn && req.query.joinedOn.gte) {
         const date = new Date(req.query.joinedOn.gte);
         whereObj.joinedOn = { [Op.gte]: date };
+
+        // else add joinedOn less than or equal to date from query params
     } else if (req.query.joinedOn && req.query.joinedOn.lte) {
         const date = new Date(req.query.joinedOn.lte);
         whereObj.joinedOn = { [Op.lte]: date };
     }
 
-    let employeesQuery = await Employee.findAll({
+    // Execute query
+    const employees = await Employee.findAll({
         where: whereObj,
         include: [
             {
@@ -49,7 +58,7 @@ exports.getEmployees = catchAsync(async (req, res) => {
 
     res.json({
         status: 200,
-        data: employeesQuery,
+        data: employees,
     });
 });
 
